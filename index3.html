@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta2</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        #sky {
+            width: 100%;
+            height: 65%;
+            background-color: #000033;
+            position: relative;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 70%;
+        }
+        #ground {
+            width: 100%;
+            height: 35%;
+            background-color: #003300;
+            position: relative;
+            overflow: hidden;
+        }
+        .grass {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: 
+                linear-gradient(to top, 
+                    #003300 0%, #003300 15%, 
+                    transparent 15%, transparent 100%),
+                linear-gradient(135deg, transparent 25%, #004d00 25%, #004d00 50%, transparent 50%),
+                linear-gradient(45deg, #006600 25%, #004d00 25%, #004d00 50%, transparent 50%);
+            background-size: 30px 30px, 30px 30px;
+            animation: moveGrass 2s linear infinite;
+        }
+        @keyframes moveGrass {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 30px 0, 30px 0, 30px 0; }
+        }
+        .flower {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+        }
+        .flower .center {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: yellow;
+            border-radius: 50%;
+            top: 22px;
+            left: 14px;
+            z-index: 2;
+        }
+        .flower .petal {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background-color: rgb(221, 148, 237);
+            border-radius: 15px 15px 0 0;
+            transform-origin: bottom center;
+            top: 10px;
+            left: 12.5px;
+        }
+        .flower .petal:nth-child(1) { transform: rotate(0deg); }
+        .flower .petal:nth-child(2) { transform: rotate(72deg); }
+        .flower .petal:nth-child(3) { transform: rotate(144deg); }
+        .flower .petal:nth-child(4) { transform: rotate(216deg); }
+        .flower .petal:nth-child(5) { transform: rotate(288deg); }
+        .flower .stem {
+            position: absolute;
+            width: 4px;
+            height: 60px;
+            background-color: #008000;
+            bottom: -60px;
+            left: 18px;
+            z-index: 1;
+        }
+        .flower .leaf {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background-color: #00a000;
+            border-radius: 10px 0;
+            bottom: -30px;
+            left: 22px;
+            transform: rotate(30deg);
+        }
+        .flower .leaf:nth-child(2) {
+            left: -2px;
+            transform: scaleX(-1) rotate(30deg);
+        }
+        #moon {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: #FFFAE6;
+            border-radius: 50%;
+            top: 30px;
+            left: 30px;
+            box-shadow: 0 0 20px #FFFAE6;
+            cursor: pointer;
+        }
+        #love-letter {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #FFF5E6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            max-width: 80%;
+            text-align: center;
+            z-index: 1000;
+        }
+        #love-letter h2 {
+            color: #FF69B4;
+        }
+        #love-letter p {
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="sky">
+        <div id="moon"></div>
+    </div>
+    <div id="ground">
+        <div class="grass"></div>
+    </div>
+    <div id="love-letter">
+        <h2>Amada mia</h2>
+        <p>Ya ha pasado un año desde que decidimos compartir nuestras vidas, tiempo en el cual he amado estar contigo, ya que el que estés junto a mí alegra mis días y le da sentido a mi vida. Deseo que podamos seguir amándonos por siempre, a través de los malos ratos y de los momentos en los que no nos llegamos a entender bien. Quiero que sepas que mi amor y todo mi ser te acompañan siempre, ya que tú eres mi vida entera. Te amo más allá de las palabras, más allá del espacio, más allá de las estrellas</p>
+    </div>
+
+    <script>
+        function createStars(count) {
+            const sky = document.getElementById('sky');
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                sky.appendChild(star);
+
+                setInterval(() => {
+                    star.style.opacity = Math.random();
+                }, Math.random() * 3000 + 1000);
+            }
+        }
+
+        function createFlowers(count) {
+            const ground = document.getElementById('ground');
+            for (let i = 0; i < count; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.style.left = `${Math.random() * 100}%`;
+                flower.style.bottom = `${Math.random() * 20 + 20}%`;
+                
+                const center = document.createElement('div');
+                center.className = 'center';
+                flower.appendChild(center);
+
+                for (let j = 0; j < 5; j++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    flower.appendChild(petal);
+                }
+
+                const stem = document.createElement('div');
+                stem.className = 'stem';
+                flower.appendChild(stem);
+
+                for (let k = 0; k < 2; k++) {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    flower.appendChild(leaf);
+                }
+
+                ground.appendChild(flower);
+            }
+        }
+
+        function setupMoon() {
+            const moon = document.getElementById('moon');
+            const letter = document.getElementById('love-letter');
+            moon.addEventListener('click', () => {
+                letter.style.display = letter.style.display === 'none' ? 'block' : 'none';
+            });
+        }
+
+        createStars(100);
+        createFlowers(20);
+        setupMoon();
+    </script>
+</body>
+</html>
